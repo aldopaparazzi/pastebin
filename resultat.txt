@@ -1,0 +1,1497 @@
+﻿
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\config.py
+
+file_content
+from pathlib import Path
+
+# racine du projet = dossier config.py
+ROOT = Path(__file__).resolve().parent
+
+# dossiers standards
+DATA_DIR = ROOT / "data"
+DEBUG_DIR = DATA_DIR / "debug"
+RAW_DIR = DATA_DIR / "raw"
+REFERENCE_DIR = DATA_DIR / "reference"
+
+DB_PATH = ROOT / "database" / "sensory.db"
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\main.py
+
+file_content
+# D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\.vscode\project\main.py
+from config import DEBUG_DIR
+from ingestion.import_data import run as run_import
+from pathlib import Path
+from pipeline.split import split_patient_responses
+from pipeline.map import map_questions
+
+
+def main():
+
+    # =========================================================
+    # IMPORT
+    # =========================================================
+
+    print("=== IMPORT ===")
+
+    datasets = run_import()
+
+    # datasets =
+    # {
+    #   "enfant": df,
+    #   "jeune_enfant": df,
+    #   "scolaire": df
+    # }
+
+    # =========================================================
+    # PIPELINE
+    # =========================================================
+
+    print("\n=== PIPELINE ===")
+
+    for form_type, df in datasets.items():
+
+        print(f"\n--- {form_type} ---")
+
+        # -----------------------------------------------------
+        # SPLIT
+        # -----------------------------------------------------
+
+        patients, responses = split_patient_responses(
+            df,
+            debug=True,
+            name=form_type
+        )
+
+        print(f"patients: {len(patients)}")
+        print(f"responses: {len(responses)}")
+
+        # -----------------------------------------------------
+        # MAP
+        # -----------------------------------------------------
+
+        print(f"\n=== MAP {form_type} ===")
+
+        mapped = map_questions(
+            responses,
+            form_type=form_type,
+            debug=True
+        )
+
+        print(mapped.head())
+        # =====================================================
+        # DEBUG EXPORT (AJOUT ICI)
+        # =====================================================
+
+        debug_dir = Path("data/debug")
+        debug_dir.mkdir(parents=True, exist_ok=True)
+
+        output_path = debug_dir / f"{form_type}_mapped.csv"
+        mapped.to_csv(output_path, index=False, encoding="utf-8")
+
+        print(f"[DEBUG] mapped saved → {output_path}")
+        
+    print("\nOK pipeline terminé")
+
+
+if __name__ == "__main__":
+    main()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\requirements.txt
+
+file_content
+colorama==0.4.6
+duckdb==1.5.3
+et_xmlfile==2.0.0
+iniconfig==2.3.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.4.6
+openpyxl==3.1.5
+packaging==26.2
+pandas==3.0.3
+pluggy==1.6.0
+pyarrow==24.0.0
+Pygments==2.20.0
+pytest==9.0.3
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
+rich==15.0.0
+six==1.17.0
+tzdata==2026.2
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\resultat.txt
+
+file_content
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\config.py
+
+file_content
+from pathlib import Path
+
+# racine du projet = dossier config.py
+ROOT = Path(__file__).resolve().parent
+
+# dossiers standards
+DATA_DIR = ROOT / "data"
+DEBUG_DIR = DATA_DIR / "debug"
+RAW_DIR = DATA_DIR / "raw"
+REFERENCE_DIR = DATA_DIR / "reference"
+
+DB_PATH = ROOT / "database" / "sensory.db"
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\main.py
+
+file_content
+# D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\.vscode\project\main.py
+from config import DEBUG_DIR
+from ingestion.import_data import run as run_import
+from pathlib import Path
+from pipeline.split import split_patient_responses
+from pipeline.map import map_questions
+
+
+def main():
+
+    # =========================================================
+    # IMPORT
+    # =========================================================
+
+    print("=== IMPORT ===")
+
+    datasets = run_import()
+
+    # datasets =
+    # {
+    #   "enfant": df,
+    #   "jeune_enfant": df,
+    #   "scolaire": df
+    # }
+
+    # =========================================================
+    # PIPELINE
+    # =========================================================
+
+    print("\n=== PIPELINE ===")
+
+    for form_type, df in datasets.items():
+
+        print(f"\n--- {form_type} ---")
+
+        # -----------------------------------------------------
+        # SPLIT
+        # -----------------------------------------------------
+
+        patients, responses = split_patient_responses(
+            df,
+            debug=True,
+            name=form_type
+        )
+
+        print(f"patients: {len(patients)}")
+        print(f"responses: {len(responses)}")
+
+        # -----------------------------------------------------
+        # MAP
+        # -----------------------------------------------------
+
+        print(f"\n=== MAP {form_type} ===")
+
+        mapped = map_questions(
+            responses,
+            form_type=form_type,
+            debug=True
+        )
+
+        print(mapped.head())
+        # =====================================================
+        # DEBUG EXPORT (AJOUT ICI)
+        # =====================================================
+
+        debug_dir = Path("data/debug")
+        debug_dir.mkdir(parents=True, exist_ok=True)
+
+        output_path = debug_dir / f"{form_type}_mapped.csv"
+        mapped.to_csv(output_path, index=False, encoding="utf-8")
+
+        print(f"[DEBUG] mapped saved → {output_path}")
+        
+    print("\nOK pipeline terminé")
+
+
+if __name__ == "__main__":
+    main()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\requirements.txt
+
+file_content
+colorama==0.4.6
+duckdb==1.5.3
+et_xmlfile==2.0.0
+iniconfig==2.3.0
+markdown-it-py==4.2.0
+mdurl==0.1.2
+numpy==2.4.6
+openpyxl==3.1.5
+packaging==26.2
+pandas==3.0.3
+pluggy==1.6.0
+pyarrow==24.0.0
+Pygments==2.20.0
+pytest==9.0.3
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
+rich==15.0.0
+six==1.17.0
+tzdata==2026.2
+
+
+==============
+
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\backend\main.py
+
+file_content
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"status": "ok"}
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\backend\scoring.py
+
+file_content
+import sqlite3
+
+DB_PATH = "../database/sensory.db"
+
+
+def get_norm(form_type, category, age_group, scale):
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT mean, sd
+        FROM norms
+        WHERE form_type = ?
+        AND category = ?
+        AND age_group = ?
+        AND scale = ?
+    """, (form_type, category, age_group, scale))
+
+    result = cursor.fetchone()
+
+    conn.close()
+
+    return result
+
+
+def compute_z_score(raw_score, mean, sd):
+
+    return (raw_score - mean) / sd
+
+
+# =========================
+# TEST
+# =========================
+
+raw_score = 62
+
+norm = get_norm(
+    form_type="child",
+    category="quadrant",
+    age_group=4,
+    scale="RE"
+)
+
+mean, sd = norm
+
+z_score = compute_z_score(raw_score, mean, sd)
+
+print("Score brut :", raw_score)
+print("Moyenne :", mean)
+print("Écart-type :", sd)
+print("Z-score :", round(z_score, 2))
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\backend\seed_norms.py
+
+file_content
+import sqlite3
+
+DB_PATH = "../database/sensory.db"
+
+conn = sqlite3.connect(DB_PATH)
+cursor = conn.cursor()
+
+norms = [
+
+    # =========================
+    # ENFANT — QUADRANTS
+    # Tableau 3.7
+    # =========================
+
+    ("child", "quadrant", 4, "RE", 31.0, 9.3),
+    ("child", "quadrant", 4, "EV", 33.5, 11.2),
+    ("child", "quadrant", 4, "SE", 28.1, 8.8),
+    ("child", "quadrant", 4, "EN", 28.4, 6.4),
+
+    ("child", "quadrant", 5, "RE", 31.3, 9.3),
+    ("child", "quadrant", 5, "EV", 36.7, 9.6),
+    ("child", "quadrant", 5, "SE", 30.0, 7.8),
+    ("child", "quadrant", 5, "EN", 29.6, 5.9),
+
+]
+
+cursor.executemany("""
+INSERT INTO norms (
+    form_type,
+    category,
+    age_group,
+    scale,
+    mean,
+    sd
+)
+VALUES (?, ?, ?, ?, ?, ?)
+""", norms)
+
+conn.commit()
+
+print("Normes importées.")
+
+conn.close()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\backend\services\ingest_answers.py
+
+file_content
+from pathlib import Path
+import sqlite3
+import pandas as pd
+from config import DB_PATH, RAW_DIR
+
+def get_latest_csv(form_type: str, base_dir: Path):
+    raw_dir = base_dir / "data/raw"
+
+    latest = raw_dir / f"{form_type}_latest.csv"
+
+    if latest.exists():
+        return latest
+
+    raise FileNotFoundError("No latest file found")
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = (BASE_DIR / "../../database/sensory.db").resolve()
+CSV_PATH = get_latest_csv("enfant", BASE_DIR)
+
+print("DB:", DB_PATH)
+print("CSV:", CSV_PATH)
+
+conn = sqlite3.connect(DB_PATH)
+df = pd.read_csv(RAW_DIR / "enfant_2026-05-26_15-45-16.csv")
+cursor = conn.cursor()
+
+for _, row in df.iterrows():
+    cursor.execute("""
+        INSERT INTO answers (
+            form_id,
+            question_code,
+            quadrant,
+            component,
+            section_name,
+            answer_value
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        1,  # temporaire patient/form id
+        row.get("question_code", None),
+        row.get("quadrant", None),
+        row.get("component", None),
+        row.get("section_name", None),
+        row.get("response", 0)
+    ))
+
+conn.commit()
+conn.close()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\backend\services\scoring_engine.py
+
+file_content
+from pathlib import Path
+import sqlite3
+
+DB_PATH = Path(__file__).resolve().parents[2] / "database" / "sensory.db"
+
+def compute_quadrant_scores(form_id: int):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            quadrant,
+            SUM(answer_value) as raw_score
+        FROM answers
+        WHERE form_id = ?
+        GROUP BY quadrant
+    """, (form_id,))
+
+    results = cursor.fetchall()
+    conn.close()
+
+    return {q: s for q, s in results}
+
+
+if __name__ == "__main__":
+    print(compute_quadrant_scores(1))
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\config\google_sheets.py
+
+file_content
+# config/__init__.py
+from pathlib import Path
+import json
+
+CONFIG_DIR = Path(__file__).resolve().parent
+
+def load_sources():
+    path = CONFIG_DIR / "source.json"
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+GOOGLE_SHEETS = load_sources()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\config\source.json
+
+file_content
+{
+  "enfant": {
+    "url": "https://docs.google.com/spreadsheets/d/1JEekxASmtY_A9zAHnPQau9cu3et3RTiGqV3gezKrKFs/export?format=csv",
+    "type": "tally_wide",
+    "active": true
+  },
+  "jeune_enfant": {
+    "url": "https://docs.google.com/spreadsheets/d/1gfENCpzUc-8g6veU4EzTtscvyy430QHpxtKTCUY0cOA/export?format=csv",
+    "type": "tally_wide",
+    "active": true
+  },
+  "scolaire": {
+    "url": "https://docs.google.com/spreadsheets/d/1nOPZAJAqWuH5d1zPtjzXgw5N2THgIudCwEzocvRQfwo/export?format=csv",
+    "type": "tally_wide",
+    "active": true
+  }
+}
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\config\__init__.py
+
+file_content
+# config/__init__.py
+from pathlib import Path
+import json
+
+CONFIG_DIR = Path(__file__).resolve().parent
+
+def load_sources():
+    path = CONFIG_DIR / "source.json"
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+GOOGLE_SHEETS = load_sources()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\dataset_patients_split.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,Enfant,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :"
+Ard2AKo,rjJJAb5,2026-05-20 16:06:11,,,,,,,,,,,,,,
+7XWWrRZ,rjJJAb5,2026-05-21 11:33:26,,,,,,,,,,,,,,
+q5ddlZO,rjJJAb5,2026-05-21 11:38:01,,,,,,,,,,,,,,
+e566Xzx,rjJJAb5,2026-05-21 11:40:23,,,,,,,,,,,,,,
+yX66aB0,rjJJAb5,2026-05-21 11:41:53,,,,,,,,,,,,,,
+8NKJNpO,WOKVMOe,2026-05-22 13:37:40,,,,,,,,,,,,,,
+OQz8a9Y,rjJJAb5,2026-05-22 16:27:05,,hic,,prout,kaboom,Autre,2017-05-19,,tartempion,dieu,IEF,Maison,Enfant unique,Non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\dataset_responses_split.csv
+
+file_content
+1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+3.0,,,3.0,,La situation ne peut pas se présenter.,True,0.0,2.0,,,2.0,4.0,,,4.0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\enfant_mapped.csv
+
+file_content
+question_id,response,quadrant,domaine_sensoriel,label,pour_calcul
+1,2,EV,Traitement de l'information AUDITIVE,Réagit vivement au bruit inattendu ou fort. (Par exemple Sirène chien qui aboie sèche cheveux).,oui
+34,5,EN,Traitement de l'information relative au MOUVEMENT,"Se cogne aux choses ou aux gens, ne remarque pas ce qui se trouve sur son chemin.",oui
+85,2,EN,Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,"Éprouve des difficultés à trouver des objets dans un endroit encombré (par exemple, des chaussures dans une chambre en désordre, un crayon dans un tiroir de « bric-à-brac »).",oui
+86,0,EN,Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,Semble ne pas remarquer des personnes qui entrent dans la pièce.,non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\enfant_patients_split.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,form_type,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :"
+db6gGDq,rjJJAb5,2026-05-24 06:45:22,Enfant,hjkjhjkh,,lmklmlkm,,Fille,2021-05-07,,mslr,prout,CE2,qdh,Enfant unique,Non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\enfant_responses_split.csv
+
+file_content
+1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+2,,,2,5,,,5,2,,,2,,La situation ne peut pas se présenter.,True,0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\jeune_enfant_mapped.csv
+
+file_content
+question_id,response,quadrant,domaine_sensoriel,label,pour_calcul
+1,3.0,SE,Traitement GLOBAL de l’information,a besoin d’une routine pour rester apaisé(e) ou calme.,oui
+34,0.0,SE,Traitement de l’information TACTILE,"devient anxieux(se) lorsqu’il/elle marche ou rampe ou se déplace à quatre pattes sur certaines surfaces (par exemple, herbe, sable, tapis, carrelage).*",non
+85,2.0,,,,
+86,4.0,,,,
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\jeune_enfant_patients_split.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,Enfant,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :"
+Ard2AKo,rjJJAb5,2026-05-20 16:06:11,,,,,,,,,,,,,,
+7XWWrRZ,rjJJAb5,2026-05-21 11:33:26,,,,,,,,,,,,,,
+q5ddlZO,rjJJAb5,2026-05-21 11:38:01,,,,,,,,,,,,,,
+e566Xzx,rjJJAb5,2026-05-21 11:40:23,,,,,,,,,,,,,,
+yX66aB0,rjJJAb5,2026-05-21 11:41:53,,,,,,,,,,,,,,
+8NKJNpO,WOKVMOe,2026-05-22 13:37:40,,,,,,,,,,,,,,
+OQz8a9Y,rjJJAb5,2026-05-22 16:27:05,,hic,,prout,kaboom,Autre,2017-05-19,,tartempion,dieu,IEF,Maison,Enfant unique,Non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\jeune_enfant_responses_split.csv
+
+file_content
+1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+3.0,,,3.0,,La situation ne peut pas se présenter.,True,0.0,2.0,,,2.0,4.0,,,4.0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\scolaire_mapped.csv
+
+file_content
+question_id,response,composante_scolaire,quadrant,domaine_sensoriel,label,pour_calcul
+1,3.0,1.0,EN,Traitement de l’information AUDITIVE,« passe à côté» des consignes orales données en classe (ou les manque) plus souvent que les élèves de son âge.,oui
+34,0.0,4.0,EN,Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle,"semble fatigué·e (par exemple, manque d'énergie, est lent·e).",oui
+85,2.0,,,,,
+86,4.0,,,,,
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\scolaire_patients_split.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,Enfant,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :"
+Ard2AKo,rjJJAb5,2026-05-20 16:06:11,,,,,,,,,,,,,,
+7XWWrRZ,rjJJAb5,2026-05-21 11:33:26,,,,,,,,,,,,,,
+q5ddlZO,rjJJAb5,2026-05-21 11:38:01,,,,,,,,,,,,,,
+e566Xzx,rjJJAb5,2026-05-21 11:40:23,,,,,,,,,,,,,,
+yX66aB0,rjJJAb5,2026-05-21 11:41:53,,,,,,,,,,,,,,
+8NKJNpO,WOKVMOe,2026-05-22 13:37:40,,,,,,,,,,,,,,
+OQz8a9Y,rjJJAb5,2026-05-22 16:27:05,,hic,,prout,kaboom,Autre,2017-05-19,,tartempion,dieu,IEF,Maison,Enfant unique,Non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\debug\scolaire_responses_split.csv
+
+file_content
+1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+3.0,,,3.0,,La situation ne peut pas se présenter.,True,0.0,2.0,,,2.0,4.0,,,4.0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\raw\.state.json
+
+file_content
+{
+  "enfant": "10eb91da6f1ace7ec16dee5f67f2b0d8",
+  "jeune_enfant": "fe9f999c63a1be65c494ff4f0dc4b71e",
+  "scolaire": "fe9f999c63a1be65c494ff4f0dc4b71e"
+}
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\raw\enfant_2026-05-26_15-45-16.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,form_type,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :",zero,1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+db6gGDq,rjJJAb5,2026-05-24 06:45:22,Enfant,hjkjhjkh,,lmklmlkm,,Fille,2021-05-07,,mslr,prout,CE2,qdh,Enfant unique,Non,0,2,,,2,5,,,5,2,,,2,,La situation ne peut pas se présenter.,True,0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\raw\jeune_enfant_2026-05-26_15-45-17.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,Enfant,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :",zero,1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+Ard2AKo,rjJJAb5,2026-05-20 16:06:11,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7XWWrRZ,rjJJAb5,2026-05-21 11:33:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+q5ddlZO,rjJJAb5,2026-05-21 11:38:01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+e566Xzx,rjJJAb5,2026-05-21 11:40:23,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+yX66aB0,rjJJAb5,2026-05-21 11:41:53,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8NKJNpO,WOKVMOe,2026-05-22 13:37:40,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+OQz8a9Y,rjJJAb5,2026-05-22 16:27:05,,hic,,prout,kaboom,Autre,2017-05-19,,tartempion,dieu,IEF,Maison,Enfant unique,Non,0.0,3.0,,,3.0,,La situation ne peut pas se présenter.,True,0.0,2.0,,,2.0,4.0,,,4.0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\raw\scolaire_2026-05-26_15-45-19.csv
+
+file_content
+Submission ID,Respondent ID,Submitted at,Enfant,Prénom de l'enfant :,Deuxième prénom de l'enfant :,Nom de famille de l'entant :,Nom préféré de l'enfant (si différent de ci-dessus) :,Sexe :,Date de naissance :,Date de l'évaluation :,Rempli par (Nom du parent / tuteur) :,Relation du parent / tuteur avec l’enfant :,Année/ niveau scolaire :,Nom de l'école /la garderie :,Dans quel ordre votre enfant est-il né par rapport aux frères et sœurs:,"Y a-t-il plus de trois enfants, âgés de 0 à 18 ans, qui ont habité dans votre maison durant les 12 derniers mois? :",zero,1 · Traitement de l'information AUDITIVE,N/A,N/A (La situation ne peut pas se présenter.),1,34 · Traitement de l'information relative au MOUVEMENT,N/A.1,N/A (La situation ne peut pas se présenter.).1,34,85 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.2,N/A (La situation ne peut pas se présenter.).2,85,86 · Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle,N/A.3,N/A (La situation ne peut pas se présenter.).3,86
+Ard2AKo,rjJJAb5,2026-05-20 16:06:11,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7XWWrRZ,rjJJAb5,2026-05-21 11:33:26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+q5ddlZO,rjJJAb5,2026-05-21 11:38:01,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+e566Xzx,rjJJAb5,2026-05-21 11:40:23,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+yX66aB0,rjJJAb5,2026-05-21 11:41:53,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8NKJNpO,WOKVMOe,2026-05-22 13:37:40,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+OQz8a9Y,rjJJAb5,2026-05-22 16:27:05,,hic,,prout,kaboom,Autre,2017-05-19,,tartempion,dieu,IEF,Maison,Enfant unique,Non,0.0,3.0,,,3.0,,La situation ne peut pas se présenter.,True,0.0,2.0,,,2.0,4.0,,,4.0
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\reference\enfant.csv
+
+file_content
+quadrant;domaine_sensoriel;question_id;label;pour_calcul
+EV;Traitement de l'information AUDITIVE;1;Réagit vivement au bruit inattendu ou fort. (Par exemple Sirène chien qui aboie sèche cheveux).;oui
+EV;Traitement de l'information AUDITIVE;2;Se couvre les oreilles des mains pour se protéger du bruit.;oui
+SE;Traitement de l'information AUDITIVE;3;Éprouve des difficultés à accomplir ou terminer des tâches lorsqu'il y a de la musique ou que la télévision est allumée.;oui
+SE;Traitement de l'information AUDITIVE;4;Est distrait·e dans un environnement bruyant.;oui
+EV;Traitement de l'information AUDITIVE;5;Ne peut pas réaliser des tâches lorsqu'il a un bruit de fond. (par exemple ventilateur réfrigérateur).;oui
+SE;Traitement de l'information AUDITIVE;6;Fais la sourde oreille ou semble m'ignorer.;oui
+SE;Traitement de l'information AUDITIVE;7;Semble ne pas entendre lorsque je l'appelle par son prénom. (alors que son audition est bonne).;oui
+EN;Traitement de l'information AUDITIVE;8;Aime les bruits étranges ou fait du(des) bruit(s) par plaisir.;oui
+SE;Traitement de l'information VISUELLE;9;Préfère jouer ou travailler dans des conditions de faible luminosité.;oui
+NA;Traitement de l'information VISUELLE;10;Préfère |es vêtements aux couleurs et aux motifs vifs.;oui
+NA;Traitement de l'information VISUELLE;11;Aime regarder les détails visuels des objets.;oui
+EN;Traitement de l'information VISUELLE;12;A besoin d'aide pour trouver des objets qui sont facilement repérables par les autres.;oui
+SE;Traitement de l'information VISUELLE;13;Est davantage incommodé·e par des lumières vives que les enfants de son âge.;oui
+RE;Traitement de l'information VISUELLE;14;Regarde les gens qui se déplacent dans la pièce.;oui
+EV;Traitement de l'information VISUELLE;15;Est gêné par les lumières vives (par exemple, se cache de la lumière du soleil qui passe par la fenêtre de la voiture).;non
+SE;Traitement de l'information TACTILE;16;Montre des signes d'anxiété et/ou de détresse lors de la toilette ou des soins du corps qui lui sont dispensés (par exemple, se débat ou pleure) lorsqu'on lui coupe les cheveux ou les ongles ou qu'on lui lave le visage).;oui
+NA;Traitement de l'information TACTILE;17;Devient agacé·e ou contrarié·e par les chaussures ou les chaussettes qu'il/elle porte.;oui
+EV;Traitement de l'information TACTILE;18;Réagit avec émotion ou agressivité lorsqu'on le/la touche.;oui
+SE;Traitement de l'information TACTILE;19;Devient anxieux(se) lorsqu'il/elle se trouve proche des autres (par exemple, dans une file d’attente).;oui
+SE;Traitement de l'information TACTILE;20;Frotte où gratte une partie de son corps qui vient d'être touchée.;oui
+RE;Traitement de l'information TACTILE;21;Touche les personnes ou les objets au point d'agacer les autres.;oui
+RE;Traitement de l'information TACTILE;22;Manifeste un besoin de toucher des jouets, des surfaces ou des textures (par exemple, veut ressentir les sensations Traitement de l'information TACTILEs provoquées par tout ce qui l'entoure, veut toucher à tout).;oui
+EN;Traitement de l'information TACTILE;23;Semble peu ou pas conscient·e de la douleur.;oui
+EN;Traitement de l'information TACTILE;24;Semble peu ou pas conscient·e des changements de température.;oui
+RE;Traitement de l'information TACTILE;25;Touche les objet et les personnes et les objets plus fréquemment que es enfants de son âge.;oui
+EN;Traitement de l'information TACTILE;26;Semble ne pas remarquer que son visage ou ses mains sont sales.;oui
+RE;Traitement de l'information relative au MOUVEMENT;27;Recherche le mouvement au point que cela perturbe les activités quotidiennes (par exemple ne peut pas rester assis·e·, gigote).;oui
+RE;Traitement de l'information relative au MOUVEMENT;28;Se balance sur sa chaise, au sol ou debout.;oui
+NA;Traitement de l'information relative au MOUVEMENT;29;Hésite à monter ou descendre d'un trottoir ou les marches d'un escalier (Par exemple, et prudent·e, s'arrête avant de se déplacer).;oui
+RE;Traitement de l'information relative au MOUVEMENT;30;Devient tout excité·e et très actif·ve au cours de tâches impliquant des mouvements.;oui
+RE;Traitement de l'information relative au MOUVEMENT;31;Se met en danger ou prend des risques en bougeant ou en grimpant.;oui
+RE;Traitement de l'information relative au MOUVEMENT;32;Recherche des occasions de tomber, sans prêter attention à se propre sécurité (par exemple, tombe intentionnellement).;oui
+EN;Traitement de l'information relative au MOUVEMENT;33;Perd l'équilibre de manière inattendue ou soudaine en marchant sur Une surface irrégulière.;oui
+EN;Traitement de l'information relative au MOUVEMENT;34;Se cogne aux choses ou aux gens, ne remarque pas ce qui se trouve sur son chemin.;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;35;Bouge avec raideur.;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;36;Se fatigue facilement, surtout lorsqu'il·elle est debout ou lorsqu'il·elle reste dans la même position.;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;37;Semble avoir une faiblesse musculaire.;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;38;Prend appui ou cherche des supports pour se tenir (par exemple, se tient la tête avec les mains, s'appuie contre un mur).;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;39;S'agrippe davantage aux objets, aux Murs ou aux rampes que les enfants de son âge.;oui
+EN;Traitement de l'information relative à la POSITION DU CORPS;40;Marche lourdement comme si ses pieds étaient pesants.;oui
+RE;Traitement de l'information relative à la POSITION DU CORPS;41;Se couche sur les meubles ou sur les personnes comme si il/elle s'affalait dessus ou les enveloppait.;oui
+NA;Traitement de l'information relative à la POSITION DU CORPS;42;A besoin de couvertures lourdes/épaisses pour dormir.;oui
+NA;Traitement de l'information SENSORIELLE ORALE;43;A facilement des haut-le-cœur avec certaines textures d'aliments ou avec certains couverts dans la bouche.;oui
+SE;Traitement de l'information SENSORIELLE ORALE;44;Rejette où évite certains goûts et odeurs de nourriture qui font partie de l'alimentation habituelle d'un enfant.;oui
+SE;Traitement de l'information SENSORIELLE ORALE;45;Ne mange que des aliments d'un certain goût (par exemple, sucré, salé) ou se limite à certaines textures d'aliments.;oui
+SE;Traitement de l'information SENSORIELLE ORALE;46;Se limite à certaines textures d'aliments.;oui
+SE;Traitement de l'information SENSORIELLE ORALE;47;Est un·e mangeu·euse sélectif·ive, particulièrement en ce qui concerne la texture des aliments,.;oui
+RE;Traitement de l'information SENSORIELLE ORALE;48;Sent ou renifle des objets non comestibles.;oui
+RE;Traitement de l'information SENSORIELLE ORALE;49;Manifeste une préférence très marquée pour Certains goûts.;oui
+RE;Traitement de l'information SENSORIELLE ORALE;50;Est avide de certains aliments, goûts ou odeurs.;oui
+RE;Traitement de l'information SENSORIELLE ORALE;51;Porte ses Mains où des objets à la bouche (par exemple, des crayons).;oui
+SE;Traitement de l'information SENSORIELLE ORALE;52;Se mord davantage la langue ou les fièvres que les enfants de son âge.;oui
+EN;CONDUITES relatives au traitement de l'information sensorielle;53;Semble sujet aux accidents.;oui
+EN;CONDUITES relatives au traitement de l'information sensorielle;54;Colorie, écrit ou dessine avec précipitation ou sans application.;oui
+RE;CONDUITES relatives au traitement de l'information sensorielle;55;Prend des risques excessifs (par exemple, grimpe haut dans un arbre, saute d'un meuble haut), compromettant sa propre sécurité.;oui
+RE;CONDUITES relatives au traitement de l'information sensorielle;56;Semble plus actif·ve que autres enfants de son âge.;oui
+EN;CONDUITES relatives au traitement de l'information sensorielle;57;Réalise des tâches de manière plus compliquée que nécessaire (par exemple perd du temps, se déplace lentement).;oui
+EV;CONDUITES relatives au traitement de l'information sensorielle;58;Peut être tétu·e et peu coopératif·ve.;oui
+EV;CONDUITES relatives au traitement de l'information sensorielle;59;Fait des crises de colère,.;oui
+RE;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;60;Semble prendre plaisir à tomber.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;61;Évite le contact visuel avec moi ou avec d’autres personnes.;oui
+EN;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;62;Semble avoir une faible estime de soi (par exemple, difficulté à s’aimer).;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;63;À besoin d'encouragements dans une situation exigeante ou pour reprendre une tâche difficile.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;64;Est sensible aux critique&.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;65;A es peurs prévisibles et claquement identifiées.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;66;Dit qu'il/elle se sent nul(le).;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;67;Est trop sérieux(se).;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;68;A des réactions émotionnelles violentes quand il/elle n'arrive pas à l'accomplir ou à terminer une tâche.;oui
+SE;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;69;A des difficultés à interpréter le langage corporel ou les expressions faciales.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;70;Est facilement frustré·e.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;71;A des peurs qui perturbent les routines quotidiennes.;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;72;Montre des signes d'anxiété et/ou de détresse lors de changements de plans et de routines ou lors des modifications survenues par rapport à ses attentes.;oui
+SE;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;73;A un besoin de protection plus important que les enfants de son âge (pare exemple, est sans défense sur le plan physique ou fonctionnel).;oui
+EV;Réponses SOCIO-EMOTIONNELLE relatives au traitement de l'information sensorielle;74;Interagit ou participe moins au sein d'un groupe que les € enfants de son âge.;oui
+EV;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;75;Éprouve des difficultés avec les relations amicales (par exemple à du mal à se faire des ami·e·s où à les garder).;oui
+EN;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;76;Manque les occasions de contact visuel avec moi au cours des interactions de tous les jours.;oui
+SE;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;77;A des difficultés à être attentif·ve.;oui
+SE;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;78;Détourne le regard de ses tâches pour observer tout ce qui se passe dans la pièce.;oui
+EN;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;79;Semble ne pas être conscient·e de ce qui se passe dans un environnement actif (par exemple, semble ne pas remarquer qu'il y a eu de l'activité).;oui
+EN;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;80;Fixe intensément les objets.;oui
+EV;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;81;Fixe intensément les gens.;oui
+RE;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;82;Regarde chaque personne qui se déplace dans la pièce.;oui
+RE;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;83;Passe d'une chose à une autre, ce qui perturbe ses activités.;oui
+SE;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;84;Se perd facilement.;oui
+EN;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;85;Éprouve des difficultés à trouver des objets dans un endroit encombré (par exemple, des chaussures dans une chambre en désordre, un crayon dans un tiroir de « bric-à-brac »).;oui
+EN;Réponses ATTENTIONNELLE relatives au traitement de l'information sensorielle;86;Semble ne pas remarquer des personnes qui entrent dans la pièce.;non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\reference\jeune_enfant.csv
+
+file_content
+quadrant;domaine_sensoriel;question_id;label;pour_calcul
+SE;Traitement GLOBAL de l’information;1;a besoin d’une routine pour rester apaisé(e) ou calme.;oui
+SE;Traitement GLOBAL de l’information;2;agit d’une façon qui perturbe l’emploi du temps et les projets de la famille.;oui
+EV;Traitement GLOBAL de l’information;3;ne veut pas jouer lorsqu’il/elle se trouve parmi d’autres enfants.;oui
+SE;Traitement GLOBAL de l’information;4;prend plus de temps que les enfants de son âge à répondre aux questions ou à réagir aux actions.;oui
+SE;Traitement GLOBAL de l’information;5;se retire ou isolé de certaines situations.;oui
+EN;Traitement GLOBAL de l’information;6;a des habitudes de sommeil non prévisibles.;oui
+EV;Traitement GLOBAL de l’information;7;a des habitudes alimentaires non prévisibles.;oui
+EN;Traitement GLOBAL de l’information;8;a le sommeil léger.;oui
+EN;Traitement GLOBAL de l’information;9;manque les occasions de contact visuel avec moi au cours des interactions de tous les jours.;oui
+EV;Traitement GLOBAL de l’information;10;devient anxieux(se) face aux situations nouvelles.;oui
+EN;Traitement de l’information AUDITIVE;11;n’est attentif(ve) que si je parle fort.;oui
+EN;Traitement de l’information AUDITIVE;12;n’est attentif(ve) que lorsque je le/la touche (alors que son audition est bonne).;oui
+SE;Traitement de l’information AUDITIVE;13;sursaute au moindre bruit par rapport aux enfants de son âge (par exemple, chien qui aboie, enfants qui crient).;oui
+EN;Traitement de l’information AUDITIVE;14;est distrait(e) dans un environnement bruyant.;oui
+EN;Traitement de l’information AUDITIVE;15;ignore les sons, y compris ma voix.;oui
+SE;Traitement de l’information AUDITIVE;16;devient perturbé(e) ou irritable dans des environnements bruyants ou essaie de les fuir.;oui
+EN;Traitement de l’information AUDITIVE;17;met beaucoup de temps à réagir à l’appel de son prénom.;oui
+EN;Traitement de l’information VISUELLE;18;aime regarder les objets qui bougent ou qui tournoient (par exemple, machine à laver, toupies, jouets avec des roues).;oui
+EN;Traitement de l’information VISUELLE;19;aime regarder les objets qui brillent.;oui
+EN;Traitement de l’information VISUELLE;20;est attiré(e) par les écrans (télévision, tablette ou smartphone) comportant des images aux couleurs vives et brillantes ou animées avec un rythme rapide.;oui
+EN;Traitement de l’information VISUELLE;21;réagit vivement aux lumières fortes ou inattendues (par exemple, lorsqu’elle/il sort à l’extérieur).;oui
+SE;Traitement de l’information VISUELLE;22;est gêné(e) par les lumières vives (par exemple, se cache de la lumière du soleil qui passe par la fenêtre de la voiture).;oui
+EN;Traitement de l’information VISUELLE;23;est davantage incommodé(e) par des lumières vives que les enfants de son âge.;oui
+EN;Traitement de l’information VISUELLE;24;repousse les jouets aux couleurs vives.*;non
+EN;Traitement de l’information VISUELLE;25;ne réagit pas à sa propre image/son reflet dans le miroir.*;non
+SE;Traitement de l’information TACTILE;26;devient irritable ou perturbé(e) lorsqu’on lui coupe les ongles.;oui
+EV;Traitement de l’information TACTILE;27;évite les caillns.;oui
+SE;Traitement de l’information TACTILE;28;est irritable ou perturbé(e) lorsqu’il/elle passe successivement dans des endroits comportant de grands écarts de température (par exemple, contraste chaud/froid en sortant d’un bain).;oui
+EV;Traitement de l’information TACTILE;29;évite le contact ou se dégage rapidement des surfaces rugueuses, froides ou collantes (par exemple, tapis, plan de travail).;oui
+EN;Traitement de l’information TACTILE;30;se cogne aux choses ou aux gens, ne remarquant pas ce qui se trouve sur son chemin.;oui
+SE;Traitement de l’information TACTILE;31;tire sur les vêtements qu’elle/il porte ou résiste à enfiler des vêtements.;oui
+EN;Traitement de l’information TACTILE;32;aime faire des éclaboussures dans le bain ou à la piscine.*;non
+SE;Traitement de l’information TACTILE;33;devient contrarié(e) ou irritable lorsque ses vêtements, ses mains ou son visage sont sales.;non
+SE;Traitement de l’information TACTILE;34;devient anxieux(se) lorsqu’il/elle marche ou rampe ou se déplace à quatre pattes sur certaines surfaces (par exemple, herbe, sable, tapis, carrelage).*;non
+EV;Traitement de l’information TACTILE;35;évite ou se dégage d’un contact ou d’un toucher inattendu.*;non
+RE;Traitement de l’information relative au MOUVEMENT;36;aime l’activité physique (par exemple, sautiller, être soulevé(e) en l’air).;oui
+RE;Traitement de l’information relative au MOUVEMENT;37;aime les activités rythmiques (par exemple, balancements, bercements, promenades en voiture).;oui
+RE;Traitement de l’information relative au MOUVEMENT;38;prend des risques en bougeant ou en grimpant.;oui
+SE;Traitement de l’information relative au MOUVEMENT;39;devient irritable ou perturbé(e) lorsqu’on le/la couche sur le dos (par exemple, pour changer sa couche).;oui
+EN;Traitement de l’information relative au MOUVEMENT;40;semble maladroit(e) ou sujet(te) aux accidents (par exemple, tombe ou se cogne).;oui
+SE;Traitement de l’information relative au MOUVEMENT;41;devient irritable lorsqu’on le/la déplace (par exemple, lorsqu’on le/la promène, lorsqu’il/elle passe des bras d’une personne à ceux d’une autre).* ;oui
+EV;Traitement de l’information SENSORIELLE ORALE;42;manifeste une aversion claire pour toute nourriture, à l’exception de quelques rares aliments de son choix.;oui
+NA;Traitement de l’information SENSORIELLE ORALE;43;bave.;oui
+SE;Traitement de l’information SENSORIELLE ORALE;44;préfère une certaine texture d’aliments (par exemple, moelleux, croquant).;oui
+EN;Traitement de l’information SENSORIELLE ORALE;45;boit pour se calmer.;oui
+SE;Traitement de l’information SENSORIELLE ORALE;46;a des haut-le-cœur avec de la nourriture ou des boissons.;oui
+NA;Traitement de l’information SENSORIELLE ORALE;47;garde la nourriture dans ses joues avant de l’avaler.;oui
+SE;Traitement de l’information SENSORIELLE ORALE;48;éprouve des difficultés à passer aux aliments solides (sevrage).;oui
+EV;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;49;fait des crises de colère.;oui
+NA;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;50;est « collant(e) ».;oui
+NA;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;51;ne reste calme que lorsqu’il/elle est pris(e) dans les bras.;oui
+SE;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;52;est difficile ou irritable.;oui
+EV;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;53;est gêné(e) ou perturbé(e) par les nouveaux environnements.;oui
+EV;Réponses COMPORTEMENTALES relatives au traitement de l’information sensorielle;54;devient si perturbé(e) ou anxieux(se) dans les nouveaux environnements qu’il est difficile de le/la calmer.;oui
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\reference\norms.csv
+
+file_content
+
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\reference\scolaire.csv
+
+file_content
+composante_scolaire;quadrant;domaine_sensoriel;question_id;label;pour_calcul
+1;EN;Traitement de l’information AUDITIVE;1;« passe à côté» des consignes orales données en classe (ou les manque) plus souvent que les élèves de son âge.;oui
+1;EN;Traitement de l’information AUDITIVE;2;fait le sourde oreille ou semble m’ignorer.;oui
+3;EN;Traitement de l’information AUDITIVE;3;éprouve des difficultés à accomplir ou terminer des tâches dans un environnement bruyant.;oui
+2;SE;Traitement de l’information AUDITIVE;4;demande aux autres de se taire ou de faire moins de bruit.;oui
+3;EV;Traitement de l’information AUDITIVE;5;montre des signes d’anxiété et/ou de détresse lors de regroupements (ex : cantine ou grand rassemblement).;oui
+3;SE;Traitement de l’information AUDITIVE;6;réagit vivement aux bruits inattendus ou forts (ex : alarme incendie, livre qui heurte le sol en tombant, porte qui claque, annonce par haut-parleur, sonnerie…).;oui
+3;EV;Traitement de l’information AUDITIVE;7;éprouve des difficultés à participer à des activités de groupe dans lesquelles on parle beaucoup.;oui
+3;SE;Traitement de l’information VISUELLE;8;« passe à côté » des directives écrites ou des consignes comportant une démonstration (ou les manque) plus souvent que les élèves de son âge.;oui
+3;SE;Traitement de l’information VISUELLE;9;éprouve des difficultés à maintenir ou organiser les affaires et le matériel utilisé tout au long de la journée.;oui
+1;EN;Traitement de l’information VISUELLE;10;laisse certaines questions sans réponse sur une feuille d'informations, bien qu'il/elle connaisse les réponses.;oui
+2;RE;Traitement de l’information VISUELLE;11;regarde les personnes qui se déplacent dans la pièce.;oui
+2;SE;Traitement de l’information VISUELLE;12;détourne le regard de ses tâches pour observer tout ce qui se passe dans la pièce.;oui
+4;EN;Traitement de l’information VISUELLE;13;manque les occasions de contact visuel avec moi au cours des interactions de tous les jours.;oui
+2;RE;Traitement de l’information VISUELLE;14;est attiré·e par les écrans (ordinateur, tablette) comportant des images aux couleurs vives et brillantes ou animées avec un mouvement rapide.;oui
+1;RE;Traitement de l'information TACTILE;15;s'approche trop près des autres lors de discussions en face à face.;oui
+1;EN;Traitement de l'information TACTILE;16;ne semble pas remarquer que son visage ou ses mains restent sales.;oui
+1;RE;Traitement de l'information TACTILE;17;touche les personnes ou les objets au point d'agacer les autres.;oui
+2;RE;Traitement de l'information TACTILE;18;manifeste un besoin de toucher des objets, des surfaces ou des textures (par exemple, veut ressentir les sensations tactiles provoquées par tout ce qui l'entoure, veut toucher à tout).;oui
+2;SE;Traitement de l'information TACTILE;19;veut vite s'essuyer les mains lors de tâches salissantes.;oui
+2;SE;Traitement de l'information TACTILE;20;est facilement perturbé·e par des blessures bénignes (par exemple, lorsqu'il/elle se cogne à quelque chose, s'égratigne ou se coupe).;oui
+3;SE;Traitement de l'information TACTILE;21;n'utilise que le bout de ses doigts lors d'activités qui demandent de la manipulation.;oui
+3;EV;Traitement de l'information TACTILE;22;sursaute ou recule lorsqu'on lui touche le corps ou qu'on s'approche trop près de lui/elle.;oui
+4;EN;Traitement de l'information relative au MOUVEMENT;23;ne stabilise pas les objets lorsqu'il/elle travaille (par exemple, tient pas sa feuille lorsqu'il/elle écrit).;oui
+1;RE;Traitement de l'information relative au MOUVEMENT;24;joue avec des objets ou les tripote (par exemple, crayons, cahiers, classeurs).;oui
+1;SE;Traitement de l'information relative au MOUVEMENT;25;ne tient pas en place ou devient nerveux(se) ou perturbateur lorsqu'il/elle est debout en rang ou près des autres (par exemple, en montant dans le car, en entrant dans l'école ou lorsqu'il/elle est assis·e au sein d'un groupe).;oui
+1;EN;Traitement de l'information relative au MOUVEMENT;26;est avachi·e, affalé·e sur sa chaise.;oui
+1;EN;Traitement de l'information relative au MOUVEMENT;27;se cogne aux choses ou aux gens, ne remarquant pas ce qui se trouve sur son chemin.;oui
+1;RE;Traitement de l'information relative au MOUVEMENT;28;est toujours en mouvement.;oui
+2;RE;Traitement de l'information relative au MOUVEMENT;29;trouve toutes sortes de prétextes pour aller voir l'enseignant.;oui
+4;EV;Traitement de l'information relative au MOUVEMENT;30;est moins rapide ou enclin·e à participer à des tâches ou à des activités physiques ou motrices que les élèves de son âge.;oui
+4;EV;Traitement de l'information relative au MOUVEMENT;31;reste debout ou assis·e au bord du terrain de jeu ou de la cour lors de la récréation.*;non
+4;EV;Traitement de l'information relative au MOUVEMENT;32;refuse de participer à des jeux d'équipe (par exemple, football, basket-ball, balle au prisonnier).*;non
+3;EN;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;33;réalise les tâches de manière plus compliquée que nécessaire (par exemple, perd du temps, se déplace lentement).;oui
+4;EN;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;34;semble fatigué·e (par exemple, manque d'énergie, est lent·e).;oui
+2;SE;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;35;pourrait être décrit·e comme hyper-réactif·ve ou ayant des réactions spectaculaires ou excessives par rapport aux élèves de son âge.;oui
+4;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;36;présente un sens de l'humour peu développé.;oui
+4;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;37;pourrait être décrit·e comme inflexible ou rigide par rapport aux élèves de son âge.;oui
+3;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;38;montre des signes d'anxiété et/ou de détresse lors de changements de plans et de routines ou lors des modifications survenues par rapport à ses attentes.;oui
+3;SE;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;39;peut être têtu·e ou peu coopératif·ve.;oui
+3;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;40;persévère au point que cela perturbe sa participation aux activités (par exemple, ne peut pas passer à autre chose).;oui
+3;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;41;se met en retrait ou s'isole lorsqu'il y a des modifications dans l'environnement ou des changements de routine.;oui
+3;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;42;est facilement frustré·e.;oui
+4;EV;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;43;interagit ou participe moins au sein de groupes que les élèves de son âge.;oui
+2;SE;Réponses COMPORTEMENTALES relatives au Traitement de l'information sensorielle;44;est gêné·e lorsque les règles sont enfreintes.*;non
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\data\reference\stats.csv
+
+file_content
+Tableau 3.5;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Jeune enfant, selon le quadrant et l'âge;;;;;;;;;;;;;;;
+Âge (mois);Min. Âge;Recherche;;Évitement;;Sensibilité;;Enregistrement;;;;;;;
+;;m;σ;m;σ;m;σ;m;σ;;;;;;
+7 à 12;7;25.9;6.2;15.3;5.2;23.2;7.9;14.3;3.9;;;;;;
+13 à 18;13;23.7;6.4;15.8;4.3;20.6;5.6;13.6;2.8;;;;;;
+19 à 24;19;23.7;5.9;17.1;7.0;22.3;7.8;15.8;4.4;;;;;;
+25 à 30;25;22.5;5.2;17.0;5.3;20.3;7.3;15.0;5.1;;;;;;
+31 à 35;31;22.7;6.6;16.5;4.2;18.5;5.2;14.6;3.4;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.6 ;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Jeune enfant, selon la section sensorielle et comportementale et l'âge;;;;;;;;;;;;;;;
+Âge (mois);;Traitement Global;;Traitement Auditif;;Traitement Visuel;;Traitement Tactile;;Traitement Mouvement;;Traitement Sensoriel oral;;Réponses Comportementales;
+;;m;σ;m;σ;m;σ;m;σ;m;σ;m;σ;m;σ
+7 à 12;7;15.8;4.9;10.1;4.3;19.1;5.6;9.4;3.1;13.9;4.2;12.7;5.5;10.1;4.7
+13 à 18;13;15.7;4.9;8.8;2.2;15.1;5.4;9.4;3.7;14.6;4.4;9.5;2.5;10.2;2.9
+19 à 24;19;15.5;4.7;10.4;3.7;14.2;5.2;9.8;4.6;15.4;4.0;10.0;3.0;11.0;4.1
+25 à 30;25;15.0;5.1;9.1;3.2;13.3;5.8;9.1;3.3;14.4;3.3;10.0;4.5;10.6;4.6
+31 à 35;31;14.1;4.4;9.3;2.7;13.6;4.8;8.6;3.1;14.2;4.0;8.6;2.0;9.8;3.1
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.7;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Enfant, selon le quadrant et l'âge;;;;;;;;;;;;;;;
+Âge (années);;Recherche;;Évitement;;Sensibilité;;Enregistrement;;;;;;;
+;;m;σ;m;σ;m;σ;m;σ;;;;;;
+3.0 à 3.11;3;29.7;10.4;33.1;10.4;26.3;7.4;27.7;5.9;;;;;;
+4.0 à 4.11;4;31.0;9.3;33.5;11.2;28.1;8.8;28.4;6.4;;;;;;
+5.0 à 5.11;5;31.3;9.3;36.7;9.6;30.0;7.8;29.6;5.9;;;;;;
+6.0 à 7.11;6;32.8;11.9;35.2;9.8;28.7;7.9;31.4;8.5;;;;;;
+8.0 à 9.11;8;30.2;10.8;35.6;10.7;28.6;7.8;29.5;7.4;;;;;;
+10.0 à 11.11;10;27.6;7.3;36.1;10.3;28.3;8.8;30.3;8.5;;;;;;
+12.0 à 14.11;12;24.6;6.7;30.7;11.0;25.1;8.1;28.2;7.8;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.8;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Enfant, selon la section sensorielle et l'âge;;;;;;;;;;;;;;;
+Âge (années);;Trait. Auditif;;Trait. Visuel;;Trait. Tactile;;Trait. Mouvement;;Trait. Position corps;;Trait. Sensoriel oral;;;
+;;m;σ;m;σ;m;σ;m;σ;m;σ;m;σ;;
+3.0 à 3.11;3;14.9;5.8;11.3;4.3;14.1;3.4;11.6;4.1;9.0;1.8;14.0;4.7;;
+4.0 à 4.11;4;13.5;5.5;10.3;3.3;14.4;4.4;12.4;4.2;9.5;2.0;17.0;8.4;;
+5.0 à 5.11;5;15.9;5.5;11.0;3.7;14.5;4.1;12.4;3.4;8.7;1.4;16.6;7.2;;
+6.0 à 7.11;6;15.3;6.3;10.0;3.2;14.8;4.2;14.0;5.6;9.7;2.9;14.3;5.7;;
+8.0 à 9.11;8;15.0;5.9;10.9;3.9;13.6;4.2;12.3;5.1;9.3;2.0;15.2;5.9;;
+10.0 à 11.11;10;15.0;5.3;10.2;3.6;13.7;4.4;11.1;3.7;9.9;3.1;15.4;7.0;;
+12.0 à 14.11;12;11.9;4.8;8.9;3.9;12.5;3.7;9.4;2.1;10.3;3.0;13.2;5.0;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.9;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Enfant, selon la section comportementale et l’âge;;;;;;;;;;;;;;;
+Âge (années);;Conduites;;Réponses Socio-émotionnelles;;Réponses Attentionnelles;;;;;;;;;
+;;m;σ;m;σ;m;σ;;;;;;;;
+3,0 à 3,11;3;13.5;4.1;20.8;6.7;14.5;4.5;;;;;;;;
+4,0 à 4,11;4;14.3;5.3;23.3;9.3;13.9;4.2;;;;;;;;
+5,0 à 5,11;5;15.1;5.7;24.8;7.3;15.9;5.1;;;;;;;;
+6,0 à 7,11;6;15.1;6.6;24.9;7.8;16.3;6.3;;;;;;;;
+8,0 à 9,11;8;13.7;5.5;25.3;9.0;15.2;5.3;;;;;;;;
+10,0 à 11,11;10;13.4;4.0;25.6;9.0;14.4;5.5;;;;;;;;
+12,0 à 14,11;12;11.7;3.7;22.1;9.0;13.5;5.1;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.10;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Scolaire, selon le quadrant et l’âge;;;;;;;;;;;;;;;
+Âge (années);;Recherche;;Évitement;;Sensibilité;;Enregistrement;;;;;;;
+;;m;σ;m;σ;m;σ;m;σ;;;;;;
+3,0 à 3,11;3;13.7;6.1;15.8;5.3;17.3;7.0;18.8;9.4;;;;;;
+4,0 à 4,11;4;11.8;5.7;15.8;8.0;16.5;6.8;16.8;5.8;;;;;;
+5,0 à 5,11;5;15.4;6.4;16.7;5.1;19.4;6.0;20.7;7.8;;;;;;
+6,0 à 7,11;6;14.6;5.8;15.3;5.9;17.3;7.0;21.7;9.9;;;;;;
+8,0 à 9,11;8;12.7;5.1;15.8;7.8;15.7;6.2;19.6;9.2;;;;;;
+10,0 à 11,11;10;12.1;4.3;15.4;4.1;15.9;4.7;20.5;8.3;;;;;;
+12,0 à 14,11;12;11.7;4.6;14.5;3.9;13.7;3.3;17.9;6.6;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.11;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Scolaire, selon la composante scolaire et l’âge;;;;;;;;;;;;;;;
+Âge (années);;Composante scolaire 1;;Composante scolaire 2;;Composante scolaire 3;;Composante scolaire 4;;;;;;;
+;;m;σ;m;σ;m;σ;m;σ;;;;;;
+3,0 à 3,11;3;19.1;8.9;17.0;7.1;17.6;7.0;11.8;4.8;;;;;;
+4,0 à 4,11;4;17.4;7.2;15.2;5.9;16.8;8.8;11.6;4.9;;;;;;
+5,0 à 5,11;5;22.7;8.9;19.0;5.8;18.3;5.7;12.1;3.6;;;;;;
+6,0 à 7,11;6;22.5;10.4;17.4;6.5;16.9;7.2;12.2;4.5;;;;;;
+8,0 à 9,11;8;19.6;8.6;15.5;6.0;16.2;6.6;12.6;6.4;;;;;;
+10,0 à 11,11;10;19.6;7.8;15.6;4.7;16.4;4.7;12.4;4.3;;;;;;
+12,0 à 14,11;12;17.2;6.0;14.2;4.8;14.7;3.6;11.7;3.5;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+Tableau 3.12;;;;;;;;;;;;;;;
+Moyennes et écarts types des notes brutes du Profil Sensoriel 2 Scolaire, selon la section sensorielle et comportementale et l’âge;;;;;;;;;;;;;;;
+Âge (années);;Traitement Auditif;;Traitement Visuel;;Traitement Tactile;;Traitement Mouvement;;Réponses Comportementales;;;;;
+;;m;σ;m;σ;m;σ;m;σ;m;σ;;;;
+3,0 à 3,11;3;11.2;5.3;11.7;5.3;11.1;4.0;12.8;7.0;14.8;4.8;;;;
+4,0 à 4,11;4;10.1;5.0;10.3;4.0;10.4;4.2;11.0;5.1;15.1;7.2;;;;
+5,0 à 5,11;5;11.6;4.2;13.6;4.6;12.2;4.8;14.3;6.0;16.2;4.2;;;;
+6,0 à 7,11;6;10.9;5.0;14.1;6.6;10.6;3.6;14.0;6.6;15.4;5.3;;;;
+8,0 à 9,11;8;10.0;3.7;12.0;5.8;10.1;4.3;12.3;5.8;15.6;7.6;;;;
+10,0 à 11,11;10;10.8;4.3;13.0;6.1;9.7;2.4;11.5;4.2;15.1;5.2;;;;
+12,0 à 14,11;12;9.1;2.8;10.9;4.6;9.4;3.8;10.5;4.0;14.3;3.9;;;;
+
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\ingestion\import_data.py
+
+file_content
+import pandas as pd
+import logging
+from typing import Dict, Optional
+
+from config import GOOGLE_SHEETS
+from storage.io_utils import save_raw_csv
+
+logger = logging.getLogger(__name__)
+
+
+# =========================
+# LOAD SINGLE DATASET
+# =========================
+
+def load_data(url: str) -> Optional[pd.DataFrame]:
+    """
+    Charge un CSV depuis une URL Google Sheets / endpoint CSV
+    """
+
+    try:
+        df = pd.read_csv(url)
+
+        if df is None or df.empty:
+            logger.warning("Fichier vide")
+            return None
+
+        return df
+
+    except Exception as e:
+        logger.error(f"Erreur lecture CSV : {e}")
+        return None
+
+
+# =========================
+# IMPORT PIPELINE
+# =========================
+
+def run_import() -> Dict[str, pd.DataFrame]:
+    """
+    Charge tous les formulaires définis dans GOOGLE_SHEETS
+    + snapshot RAW si changement détecté
+    """
+
+    datasets = {}
+
+    for form_name, config in GOOGLE_SHEETS.items():
+
+        logger.info(f"=== Import : {form_name} ===")
+
+        df = load_data(config["url"])
+
+        if df is None:
+            logger.warning(f"Skip : {form_name}")
+            continue
+
+        # 🔥 snapshot RAW + détection changement
+        path = save_raw_csv(df, form_name)
+
+        if path:
+            logger.info(f"RAW saved : {path}")
+        else:
+            logger.info(f"No change detected : {form_name}")
+
+        datasets[form_name] = df
+
+    logger.info(f"Import terminé | datasets={len(datasets)}")
+
+    return datasets
+
+def run():
+    dfs = {}
+
+    for form_name, config in GOOGLE_SHEETS.items():
+        print(f"=== {form_name} ===")
+
+        df = load_data(config["url"])
+        if df is None:
+            continue
+
+        path = save_raw_csv(df, form_name)
+        dfs[form_name] = df
+
+    return dfs
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\pipeline\map.py
+
+file_content
+# D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\.vscode\project\pipeline\map.py
+import pandas as pd
+from pathlib import Path
+from config import REFERENCE_DIR, DEBUG_DIR
+
+
+def load_reference(form_type: str) -> pd.DataFrame:
+    """
+    Charge la table de référence métier.
+
+    Exemple :
+    - enfant.csv
+    - jeune_enfant.csv
+    - scolaire.csv
+    """
+
+    path = REFERENCE_DIR / f"{form_type}.csv"
+
+    if not path.exists():
+        raise FileNotFoundError(f"Référence introuvable : {path}")
+
+    ref = pd.read_csv(
+        path,
+        sep=";",
+        encoding="utf-8"
+    )
+
+    # harmonisation types
+    ref["question_id"] = ref["question_id"].astype(str)
+
+    return ref
+
+
+def map_questions(
+    responses: pd.DataFrame,
+    form_type: str,
+    debug: bool = False
+):
+    """
+    Extrait uniquement les vraies réponses utiles :
+
+    question_id | response
+
+    Exemple :
+
+    34 -> 5
+
+    Supprime :
+    - labels
+    - N/A
+    - checkbox
+    - colonnes parasites
+    """
+
+    df = responses.copy()
+
+    # =========================================================
+    # passage wide -> long
+    # =========================================================
+
+    df = df.melt(
+        var_name="question_id",
+        value_name="response"
+    )
+
+    # =========================================================
+    # garder UNIQUEMENT :
+    # colonnes numériques
+    # =========================================================
+
+    df["question_id"] = df["question_id"].astype(str)
+
+    df = df[
+        df["question_id"].str.match(r"^\d+$", na=False)
+    ]
+
+    # =========================================================
+    # suppression réponses vides
+    # =========================================================
+
+    df = df.dropna(subset=["response"])
+
+    # =========================================================
+    # chargement référence métier
+    # =========================================================
+
+    ref = load_reference(form_type)
+
+    # =========================================================
+    # merge métier
+    # =========================================================
+
+    df = df.merge(
+        ref,
+        on="question_id",
+        how="left"
+    )
+
+    # =========================================================
+    # DEBUG
+    # =========================================================
+
+    if debug:
+
+        DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+
+        debug_path = DEBUG_DIR / f"{form_type}_mapped.csv"
+
+        df.to_csv(
+            debug_path,
+            index=False,
+            encoding="utf-8"
+        )
+
+        print(f"[DEBUG] mapped → {debug_path}")
+
+    return df
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\pipeline\split.py
+
+file_content
+import pandas as pd
+from pathlib import Path
+
+
+ZERO_MARKER = "zero"
+
+DEBUG_DIR = Path("data/debug")
+
+
+def split_patient_responses(
+    df: pd.DataFrame,
+    debug: bool = False,
+    name: str = "dataset"
+):
+    """
+    Split dataframe Tally en :
+
+    - patients
+    - réponses
+
+    Le marqueur 'zero' sépare :
+    [infos patient] | zero | [questions]
+    """
+
+    df = df.copy()
+
+    # nettoyage noms colonnes
+    df.columns = df.columns.str.strip()
+
+    # sécurité
+    if ZERO_MARKER not in df.columns:
+        raise ValueError("Marker 'zero' introuvable")
+
+    cols = list(df.columns)
+
+    zero_idx = cols.index(ZERO_MARKER)
+
+    # ---------------------------------------------------------
+    # séparation
+    # ---------------------------------------------------------
+
+    patient_cols = cols[:zero_idx]
+
+    question_cols = cols[zero_idx + 1:]
+
+    patients = df[patient_cols].copy()
+
+    responses = df[question_cols].copy()
+
+    # ---------------------------------------------------------
+    # DEBUG
+    # ---------------------------------------------------------
+
+    if debug:
+
+        DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+
+        patients_path = DEBUG_DIR / f"{name}_patients_split.csv"
+
+        responses_path = DEBUG_DIR / f"{name}_responses_split.csv"
+
+        patients.to_csv(
+            patients_path,
+            index=False,
+            encoding="utf-8"
+        )
+
+        responses.to_csv(
+            responses_path,
+            index=False,
+            encoding="utf-8"
+        )
+
+        print(f"[DEBUG] {name} patients → {patients_path}")
+
+        print(f"[DEBUG] {name} responses → {responses_path}")
+
+    return patients, responses
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\storage\data_fingerprint.py
+
+file_content
+import hashlib
+import pandas as pd
+
+def dataframe_hash(df: pd.DataFrame) -> str:
+    """
+    Génère une empreinte stable du contenu du DataFrame.
+    """
+    # normalisation pour éviter faux positifs
+    df_normalized = df.copy()
+    df_normalized = df_normalized.fillna("NULL")
+    df_normalized = df_normalized.astype(str)
+
+    content = df_normalized.to_csv(index=False)
+
+    return hashlib.md5(content.encode("utf-8")).hexdigest()
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\storage\io_utils.py
+
+file_content
+from pathlib import Path
+from datetime import datetime
+from storage.data_fingerprint import dataframe_hash
+from storage.state import load_state, save_state
+
+RAW_DIR = Path("data/raw")
+
+
+def save_raw_csv(df, form_name):
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+
+    current_hash = dataframe_hash(df)
+
+    state = load_state()
+    last_hash = state.get(form_name)
+
+    # 🔥 CAS 1 : pas de changement
+    if last_hash == current_hash:
+        print(f"⏭️ {form_name} inchangé → skip RAW")
+        return None
+
+    # 🔥 CAS 2 : changement détecté → save
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{form_name}_{timestamp}.csv"
+
+    path = RAW_DIR / filename
+    df.to_csv(path, index=False)
+
+    # update state
+    state[form_name] = current_hash
+    save_state(state)
+
+    print(f"💾 RAW sauvegardé : {path}")
+
+    return path
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\storage\state.py
+
+file_content
+import json
+from pathlib import Path
+
+STATE_PATH = Path("data/raw/.state.json")
+
+
+def load_state():
+    if STATE_PATH.exists():
+        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+    return {}
+
+
+def save_state(state):
+    STATE_PATH.write_text(
+        json.dumps(state, indent=2),
+        encoding="utf-8"
+    )
+
+==============
+
+path
+D:\Documents\@Papiers\Elo\PM\Profil sensoriel\app\profil-sensoriel-app\utils\files.py
+
+file_content
+from pathlib import Path
+from datetime import datetime
+import shutil
+
+def save_raw_csv(df, form_type: str, base_dir: Path):
+    raw_dir = base_dir / "data/raw"
+    archive_dir = raw_dir / "archive"
+
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    archive_dir.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    latest_path = raw_dir / f"{form_type}_latest.csv"
+    archive_path = archive_dir / f"{form_type}_{timestamp}.csv"
+
+    # 1. overwrite latest
+    df.to_csv(latest_path, index=False, encoding="utf-8")
+
+    # 2. archive snapshot
+    df.to_csv(archive_path, index=False, encoding="utf-8")
+
+    return latest_path
+
+==============
+
